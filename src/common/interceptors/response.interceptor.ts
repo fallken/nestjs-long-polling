@@ -14,8 +14,6 @@ export class ResponseInterceptor implements NestInterceptor {
     const ResponseObj: CustomResponse = context.switchToHttp().getResponse();
     ResponseObj.id = uuid(); //adding a unique id to response object
     ResponseObj.setHeader('Content-type', 'text/html; charset=utf-8');
-    ResponseObj.setHeader('Transfer-Encoding', 'chunked');
-    ResponseObj.removeHeader('Content-Length');
 
     return next.handle();
   }

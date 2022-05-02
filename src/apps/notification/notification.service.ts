@@ -1,6 +1,8 @@
 import { LongPollingService } from '@apps/shared/long-polling/long-polling.service';
+import { NewSubscriberNotificationEvent } from '@common/events';
 import { CustomResponse } from '@common/interfaces/custom-response.interface';
 import { Injectable } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 
 @Injectable()
 export class NotificationService {
@@ -8,17 +10,21 @@ export class NotificationService {
 
   public addConnection(id: string, res: CustomResponse) {
     this.longPollingService.addConnection(id, res);
-    console.log('here is the list of connections');
-    console.log(this.longPollingService.getConnection(id).length);
   }
 
   public removeConnection(id: string, responseId: string | undefined) {
     this.longPollingService.removeConnection(id, responseId);
-    console.log('removed connections on the list');
-    console.log(this.longPollingService.getConnection(id).length);
   }
 
-  public sendMessage(key: string, payload: string) {
-    return this.longPollingService.sendToConnections(key, payload);
+  public sendMessage(key: string, payload: any) {
+    return this.longPollingService.sendToConnections(
+      key,
+      JSON.stringify(payload),
+    );
+  }
+
+  @OnEvent('new_subscriber_notification')
+  private notifyConnections(payload: NewSubscriberNotificationEvent) {
+    this.sendMessage(payload.userId, payload.detail);
   }
 }

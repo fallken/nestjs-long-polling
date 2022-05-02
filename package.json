@@ -25,6 +25,7 @@
     "@nestjs/core": "^7.6.15",
     "@nestjs/event-emitter": "^1.1.0",
     "@nestjs/platform-express": "^7.6.15",
+    "connect-timeout": "^1.9.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",

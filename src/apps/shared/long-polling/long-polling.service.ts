@@ -16,6 +16,9 @@ export class LongPollingService {
     } else {
       this.connections.set(key, [res]);
     }
+
+    console.log('here is the list of connections');
+    console.log(this.connections.size);
   }
 
   public removeConnection(key: string, responseId?: string): void {
@@ -29,6 +32,8 @@ export class LongPollingService {
     } else {
       this.connections.delete(key);
     }
+    console.log('removed connections on the list');
+    console.log(this.connections.size);
   }
 
   public getConnection(key: string): CustomResponse[] | undefined {
@@ -36,10 +41,11 @@ export class LongPollingService {
   }
 
   public sendToConnections(key: string, payload: string): void {
-    const connections = this.connections.get(key);
+    const connections = this.connections.get(String(key));
 
-    connections.forEach((res) => {
-      res.send(payload);
-    });
+    if (connections && connections.length)
+      connections.forEach((res) => {
+        res.send(payload);
+      });
   }
 }
