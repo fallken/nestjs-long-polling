@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { CustomResponse } from 'src/common/interfaces/custom-response.interface';
 
-@Injectable()
+@Injectable({
+  scope: Scope.TRANSIENT,
+})
 export class LongPollingService {
   private connections = new Map<string, CustomResponse[]>();
 
@@ -37,7 +39,7 @@ export class LongPollingService {
     const connections = this.connections.get(key);
 
     connections.forEach((res) => {
-      res.write(payload);
+      res.send(payload);
     });
   }
 }

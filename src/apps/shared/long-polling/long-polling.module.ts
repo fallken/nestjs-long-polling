@@ -3,5 +3,6 @@ import { LongPollingService } from '@apps/shared/long-polling/long-polling.servi
 
 @Module({
   providers: [LongPollingService],
+  exports: [LongPollingService],
 })
 export class LongPollingModule {}
